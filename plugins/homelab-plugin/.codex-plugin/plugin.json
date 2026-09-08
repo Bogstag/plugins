@@ -1,0 +1,13 @@
+{
+    "apps": "./.app.json",
+    "hooks": "./hooks/hooks.json",
+    "interface": {
+        "displayName": "Homelab",
+        "shortDescription": "Grund för personliga dator- och homelabflöden.",
+        "longDescription": "Lokal plugin under utveckling. Chezmoi är första planerade skill; Tailscale och Aperture är senare utökningar. Versionen innehåller enbart struktur och dokumentation.",
+        "developerName": "Bogstag",
+        "category": "Productivity",
+        "capabilities": [],
+        "defaultPrompt": []
+    }
+}
