@@ -1,0 +1,9 @@
+{
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+    "mcpServers": {
+    "aperture": {
+      "type": "streamable-http",
+      "url": "http://ai.goldeye-monster.ts.net/v1/mcp"
+    }
+  }
+}
