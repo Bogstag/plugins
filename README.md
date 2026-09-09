@@ -1,11 +1,80 @@
-# Plugins
+# Bogstag Plugins
 
-This repository contains a curated collection of Codex plugin examples.
+Min samling personliga plugins för Codex och andra värdar som stöder
+Agent Plugins-formatet. Marketplace heter `plugins` och visas som **Bogstag Plugins**.
 
-Each plugin lives under `plugins/<name>/` with a required
-`.codex-plugin/plugin.json` manifest and optional companion surfaces such as
-`skills/`, `.app.json`, `.mcp.json`, plugin-level `agents/`, `commands/`,
-`hooks.json`, `assets/`, and other supporting files.
+## Struktur
 
-The default marketplace lives at `.agents/plugins/marketplace.json` and points
-at the standard `plugins/` directory. 
+```text
+.agents/plugins/marketplace.json   Pluginlista och installationspolicy
+plugins/homelab/plugin.json        Portabelt manifest och OpenAI-metadata
+plugins/homelab/mcp.json           Aperture MCP-konfiguration
+plugins/homelab/skills/            Plats för framtida skills
+plugins/homelab/references/        Referensmaterial och planering
+```
+
+[Homelab](plugins/homelab/README.md) är den första pluginen: Aperture-koppling
+och grund för framtida chezmoi- och homelabflöden. Inga aktiva skills ingår ännu.
+
+Marketplace-postens `./plugins/homelab` räknas från reporoten, inte från
+`.agents/plugins/`. Fler plugins läggs under `plugins/<namn>/` med egna poster
+i samma marketplace. Bevara befintliga poster.
+
+## Installation
+
+Installera från GitHub med en Codex-version som stöder plugin-kommandona:
+
+```bash
+codex plugin marketplace add Bogstag/plugins
+codex plugin add homelab@plugins
+```
+
+För lokal utveckling kan källan i stället registreras med
+`codex plugin marketplace add .` från reporoten. Kontrollera först
+`codex plugin marketplace list`: GitHub-källan och den lokala källan använder
+samma marketplace-namn. Kontrollera vilken källa som är vald innan installation.
+
+På den verifierade datorn används GitHub-källan. Lokala ändringar i denna
+arbetsmapp uppdaterar därför inte den installerade pluginen automatiskt.
+Starta en ny tråd eller CLI-session efter installation.
+
+## Uppdatering
+
+När ändringarna finns i GitHub-källan:
+
+```bash
+codex plugin marketplace upgrade plugins
+codex plugin add homelab@plugins
+```
+
+För en lokal källa uppdateras filerna i den registrerade checkouten före
+ominstallation. Ange en ny version i pluginens rotmanifest när ett nytt paket
+ska distribueras. Starta en ny session efter ominstallation. Redigera inte
+Codex-cache eller konfiguration manuellt för att uppdatera.
+
+## Verifiering
+
+Kör från reporoten:
+
+```bash
+python3 -m json.tool .agents/plugins/marketplace.json
+python3 -m json.tool plugins/homelab/plugin.json
+python3 -m json.tool plugins/homelab/mcp.json
+codex plugin marketplace list
+codex plugin list --marketplace plugins --available --json
+```
+
+JSON-kommandona kontrollerar syntax, inte fullständig schemakompatibilitet.
+Kontrollera även att marketplace-sökvägar når rätt plugin och att namnen
+matchar. Den lokala äldre `plugin-creator`-validatorn förväntar sig
+`.codex-plugin/plugin.json` och stöder inte det portabla formatet.
+
+Kontrollerat 2026-09-09: JSON, marketplace-namn, policy, sökvägar och
+manifestmetadata stämmer. Codex CLI `0.153.4` visar `homelab@plugins` version
+`0.1.1` som installerad och aktiverad från GitHub-källan. Pluginens manifest
+och MCP-fil matchar dess lokala marketplace-kopia.
+
+Fullständig schemavalidering, Aperture-anslutning, verktygskörning och stöd i
+Windows, ChatGPT eller andra värdar är inte verifierade.
+
+Formatreferens: [OpenAI – Package your plugin](https://developers.openai.com/plugins/build/plugins).

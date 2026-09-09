@@ -1,21 +1,20 @@
 # Homelab
 
-Personlig plugin för återanvändbara arbetsflöden på mina datorer och i mitt
-homelab. Tekniskt namn, mapp och planerat GitHub-repo: `homelab`.
-Version `0.1.0` innehåller bara grunden. Inga aktiva skills, MCP-kopplingar,
-hooks, appar eller hjälpskript ingår.
+Personlig plugin för datorer och homelab. Tekniskt namn är `homelab`,
+visningsnamnet är **Homelab**, och pluginen ingår i marketplace `plugins`
+i repot `Bogstag/plugins`.
 
-Chezmoi är [första planerade skill](references/roadmap.md), med Tailscale och
-Aperture som senare utökningar. Primärt används pluginen i lokal Codex på
-Omarchy och Windows 11. Se [stöd och begränsningar](references/compatibility.md)
-för ChatGPT och andra värdar; lokala verktyg följer inte med paketet.
+Version `0.1.1` innehåller ett portabelt manifest, en MCP-koppling till
+Aperture och dokumentation för kommande arbetsflöden. Inga aktiva skills,
+hooks, appmappningar eller hjälpskript ingår.
 
 ## Struktur
 
 ```text
 homelab/
-├── .codex-plugin/plugin.json
-├── AGENTS.md
+├── plugin.json       Identitet och extensions.com.openai
+├── mcp.json          Aperture MCP-server
+├── AGENTS.md         Regler för pluginutveckling
 ├── README.md
 ├── skills/README.md
 └── references/
@@ -23,100 +22,59 @@ homelab/
     └── roadmap.md
 ```
 
-[AGENTS.md](AGENTS.md) gäller utveckling av pluginen. Framtida skills får
-egna körinstruktioner och måste följa målrepots regler. Dotfiles- och
-infrastrukturkonfiguration förvaltas i sina respektive repon.
+`plugin.json` är ingången. OpenAI-inställningarna ligger i
+`extensions.com.openai`; ingen separat `.codex-plugin/plugin.json` behövs
+för denna struktur. `skills/` och `mcp.json` använder det portabla formatets
+fasta sökvägar.
 
-## Lokal installation
+## Installation och uppdatering
 
-På denna dator ligger källan i `~/Projects/plugins/plugins/homelab`. Den personliga
-marketplace-filen är `~/.agents/plugins/marketplace.json`, med namnet
-`personal`. Posten använder `./plugins/homelab`, relativt hemkatalogen
-(marketplace-roten), inte katalogen där JSON-filen ligger.
-`~/plugins/homelab` är en relativ symbolisk länk till projektmappen.
+Följ [repots installations-, uppdaterings- och kontrollsteg](../../README.md).
+Pluginens installationsnamn är `homelab@plugins`. Den verifierade
+installationen använder GitHub-marketplace, inte denna arbetsmapp direkt.
 
-Installera med en Codex-version som stöder plugin-kommandona:
+## Aperture och körmiljö
 
-```bash
-codex plugin add homelab@personal
-```
+`mcp.json` konfigurerar servern `aperture` med transporten `streamable-http`.
+Adressen är miljöspecifik och avsedd för det privata nätverket. Körmiljön
+måste kunna nå servern och ha de behörigheter som tjänsten kräver.
+Plugininstallation ger inte automatiskt nätverksåtkomst eller autentisering.
 
-Alternativt: öppna pluginvyn i en stödd desktop-app, uppdatera/starta om appen
-vid behov och installera Homelab från den personliga källan. Standardkällan
-upptäcks implicit och behöver inte `codex plugin marketplace add`.
-Starta en ny tråd eller CLI-session efter installationen.
+Målmiljöerna är lokal Codex på Omarchy och Windows 11. Chezmoi, Git, `gh`,
+Bitwarden och SSH-agent måste finnas och fungera där respektive framtida
+arbetsflöde körs; de installeras inte av pluginen. Bash, PowerShell och WSL
+har olika förutsättningar.
 
-På en annan dator: kopiera hela pluginmappen, inklusive `.codex-plugin`, till
-`~/plugins/homelab` eller Windows motsvarighet
-`%USERPROFILE%/plugins/homelab`. Använd `plugin-creator` för att lägga
-till posten i datorns personliga marketplace och bevara dess befintliga
-poster och namn. Befintlig marketplace kan heta något annat än `personal`;
-använd då dess faktiska namn i installationskommandot.
-Ingen symlänk behövs om källan ligger direkt under `plugins/`.
+Det portabla formatet möjliggör återanvändning, men garanterar inte stöd i
+alla värdar. ChatGPT eller andra molnmiljöer kan inte förutsättas nå datorns
+verktyg eller privata nätverk. Inga hemligheter, tokens eller privata
+SSH-nycklar ska lagras i paketet eller dess exempel.
 
-Marketplace-posten har följande form (lägg till posten, ersätt inte katalogen):
+## Plan och utveckling
 
-```json
-{
-  "name": "homelab",
-  "source": { "source": "local", "path": "./plugins/homelab" },
-  "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
-  "category": "Productivity"
-}
-```
+Chezmoi är första planerade skill. Tailscale- och Aperture-arbetsflöden kan
+byggas ut senare; själva Aperture-kopplingen finns redan.
+Skapa `SKILL.md` först när en skill är färdig och testbar.
 
-Policyn kräver inte någon hemlighet i denna grund, eftersom inga anslutningar
-ingår. Marketplace-filen och maskinens länkar ligger utanför pluginrepot.
+[AGENTS.md](AGENTS.md) gäller pluginutveckling. Framtida skills får egna
+körinstruktioner och ska följa reglerna i målrepot. Dotfiles- och
+infrastrukturrepon äger sina egna installations- och driftsregler.
 
-## Testning
-
-Kör från pluginroten på denna Linux-installation (Python 3 och PyYAML behövs
-för validatorn som levereras med `plugin-creator`):
-
-```bash
-python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
-python3 ~/.codex/skills/.system/plugin-creator/scripts/read_marketplace_name.py
-python3 -m json.tool .codex-plugin/plugin.json
-```
-
-Hjälpverktygens placering är installationsberoende; de ingår inte i Homelab.
-På Windows används installerad Python och sökvägen till motsvarande skill.
-Kontrollera även att marketplace-sökvägen når samma manifest och att inga
-`SKILL.md`-filer finns innan en färdig skill avsiktligt läggs till.
-
-Efter installation: kontrollera visningsnamnet Homelab och att inga skills
-eller verktyg tillkommer i en ny session. Det är förväntat för denna version.
-En strukturellt giltig grund är inte ett funktionstest av framtida flöden.
-
-## Uppdatering
-
-Ändra källan som marketplace-posten pekar på. Kör följande från pluginroten
-med hjälpverktygen från `plugin-creator`:
-
-```bash
-python3 ~/.codex/skills/.system/plugin-creator/scripts/read_marketplace_name.py
-python3 ~/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py .
-python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
-codex plugin add homelab@personal
-```
-
-Avbryt vid valideringsfel och använd marketplace-namnet som läsverktyget
-skriver ut. Uppdateringsverktyget behåller basversionen och ersätter ett enda
-`+codex.<cachebuster>`-suffix så att ominstallationen tar upp ändringarna.
-Redigera inte marketplace eller Codex-konfiguration manuellt för att tömma
-cachen. Starta en ny tråd/session; en installerad kopia uppdateras inte
-automatiskt när källfiler redigeras. På övriga datorer måste även källan
-synkroniseras innan ominstallation. GitHub är ännu inte skapat eller publicerat.
+Äldre underlag finns i [planen](references/roadmap.md) och
+[kompatibilitetsanteckningarna](references/compatibility.md). De är ännu inte
+fullt uppdaterade för det portabla manifestet och den tillagda MCP-kopplingen;
+den aktuella strukturen och verifieringsstatusen beskrivs här.
 
 ## Verifieringsstatus
 
-Kontrollerat 2026-09-08 med Codex CLI `0.153.4`: plugin-creator-validatorn
-godkände manifestet. Marketplace-identitet, policy, källsökväg och interna
-Markdown-länkar kontrollerades. Codex listar `homelab@personal` som
-tillgänglig, ännu inte installerad. Inga aktiva skills eller integrationer
-finns, och en sökning efter vanliga token- och privatnyckelmönster gav inga träffar.
+Kontrollerat 2026-09-09: manifest och MCP-fil är giltig JSON, marketplace-posten
+pekar rätt och Codex listar version `0.1.1` som installerad och aktiverad.
+Inga tomma appfiler, trasiga hook-referenser eller aktiva `SKILL.md` finns.
 
-Själva installationen, Windows, ChatGPT, andra värdar och faktisk aktivering
-i en ny apptråd är inte verifierade.
-Hemligheter och maskinspecifika autentiseringsuppgifter hör aldrig hemma i
-pluginen eller dess exempel; se utvecklingsreglerna i AGENTS.md.
+Den äldre lokala `plugin-creator`-validatorn underkänner avsaknaden av
+`.codex-plugin/plugin.json`; den stöder inte detta portabla manifestformat.
+Fullständig schemavalidering har inte genomförts.
+
+Apertures anslutning och verktyg har inte funktionstestats via denna plugin.
+Windows, ChatGPT och andra värdar är inte testade. Installationsstatus ska
+därför inte tolkas som att alla framtida arbetsflöden fungerar.
