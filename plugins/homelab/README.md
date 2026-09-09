@@ -1,7 +1,7 @@
 # Homelab
 
 Personlig plugin för återanvändbara arbetsflöden på mina datorer och i mitt
-homelab. Tekniskt namn, mapp och planerat GitHub-repo: `homelab-plugin`.
+homelab. Tekniskt namn, mapp och planerat GitHub-repo: `homelab`.
 Version `0.1.0` innehåller bara grunden. Inga aktiva skills, MCP-kopplingar,
 hooks, appar eller hjälpskript ingår.
 
@@ -13,7 +13,7 @@ för ChatGPT och andra värdar; lokala verktyg följer inte med paketet.
 ## Struktur
 
 ```text
-homelab-plugin/
+homelab/
 ├── .codex-plugin/plugin.json
 ├── AGENTS.md
 ├── README.md
@@ -29,16 +29,16 @@ infrastrukturkonfiguration förvaltas i sina respektive repon.
 
 ## Lokal installation
 
-På denna dator ligger källan i `~/Projects/homelab-plugin`. Den personliga
+På denna dator ligger källan i `~/Projects/homelab`. Den personliga
 marketplace-filen är `~/.agents/plugins/marketplace.json`, med namnet
-`personal`. Posten använder `./plugins/homelab-plugin`, relativt hemkatalogen
+`personal`. Posten använder `./plugins/homelab`, relativt hemkatalogen
 (marketplace-roten), inte katalogen där JSON-filen ligger.
-`~/plugins/homelab-plugin` är en relativ symbolisk länk till projektmappen.
+`~/plugins/homelab` är en relativ symbolisk länk till projektmappen.
 
 Installera med en Codex-version som stöder plugin-kommandona:
 
 ```bash
-codex plugin add homelab-plugin@personal
+codex plugin add homelab@personal
 ```
 
 Alternativt: öppna pluginvyn i en stödd desktop-app, uppdatera/starta om appen
@@ -47,8 +47,8 @@ upptäcks implicit och behöver inte `codex plugin marketplace add`.
 Starta en ny tråd eller CLI-session efter installationen.
 
 På en annan dator: kopiera hela pluginmappen, inklusive `.codex-plugin`, till
-`~/plugins/homelab-plugin` eller Windows motsvarighet
-`%USERPROFILE%/plugins/homelab-plugin`. Använd `plugin-creator` för att lägga
+`~/plugins/homelab` eller Windows motsvarighet
+`%USERPROFILE%/plugins/homelab`. Använd `plugin-creator` för att lägga
 till posten i datorns personliga marketplace och bevara dess befintliga
 poster och namn. Befintlig marketplace kan heta något annat än `personal`;
 använd då dess faktiska namn i installationskommandot.
@@ -58,8 +58,8 @@ Marketplace-posten har följande form (lägg till posten, ersätt inte katalogen
 
 ```json
 {
-  "name": "homelab-plugin",
-  "source": { "source": "local", "path": "./plugins/homelab-plugin" },
+  "name": "homelab",
+  "source": { "source": "local", "path": "./plugins/homelab" },
   "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
   "category": "Productivity"
 }
@@ -97,7 +97,7 @@ med hjälpverktygen från `plugin-creator`:
 python3 ~/.codex/skills/.system/plugin-creator/scripts/read_marketplace_name.py
 python3 ~/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py .
 python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
-codex plugin add homelab-plugin@personal
+codex plugin add homelab@personal
 ```
 
 Avbryt vid valideringsfel och använd marketplace-namnet som läsverktyget
@@ -112,7 +112,7 @@ synkroniseras innan ominstallation. GitHub är ännu inte skapat eller publicera
 
 Kontrollerat 2026-09-08 med Codex CLI `0.153.4`: plugin-creator-validatorn
 godkände manifestet. Marketplace-identitet, policy, källsökväg och interna
-Markdown-länkar kontrollerades. Codex listar `homelab-plugin@personal` som
+Markdown-länkar kontrollerades. Codex listar `homelab@personal` som
 tillgänglig, ännu inte installerad. Inga aktiva skills eller integrationer
 finns, och en sökning efter vanliga token- och privatnyckelmönster gav inga träffar.
 

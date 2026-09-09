@@ -3,7 +3,7 @@
 Dessa regler gäller arbete i detta pluginrepo. De är inte körinstruktioner
 för installerade skills och ger inte rätt att ändra datorer eller andra repon.
 
-- Behåll `homelab-plugin` som mapp-, manifest- och framtida GitHub-reponamn;
+- Behåll `homelab` som mapp-, manifest- och framtida GitHub-reponamn;
   visningsnamnet är `Homelab`.
 - Skriv kort på svenska. Länka till gemensamma referenser i stället för att
   kopiera instruktioner. Använd relativa sökvägar inom paketet.

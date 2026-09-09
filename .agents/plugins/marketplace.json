@@ -1,14 +1,14 @@
 {
-  "name": "homelab-plugins",
+  "name": "homelab",
   "interface": {
     "displayName": "Personal"
   },
   "plugins": [
     {
-      "name": "homelab-plugin",
+      "name": "homelab",
       "source": {
         "source": "local",
-        "path": "./plugins/homelab-plugin"
+        "path": "./plugins/homelab"
       },
       "policy": {
         "installation": "AVAILABLE",
