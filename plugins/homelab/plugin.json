@@ -1,12 +1,8 @@
 {
-  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "$schema": "https://agent-plugins.org/schemas/1.1.0/plugin.schema.json",
   "name": "homelab",
   "version": "0.1.0",
   "description": "Personlig grund för återanvändbara arbetsflöden för datorer och homelab. Inga aktiva skills ännu.",
-  "author": {
-    "name": "Bogstag"
-  },
-  "repository": "https://github.com/Bogstag/homelab",
   "license": "MIT",
   "keywords": [
     "homelab",

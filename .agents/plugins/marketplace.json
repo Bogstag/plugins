@@ -1,7 +1,7 @@
 {
   "name": "plugins",
   "interface": {
-    "displayName": "Plugins"
+    "displayName": "Bogstag Plugins"
   },
   "plugins": [
     {

@@ -29,7 +29,7 @@ infrastrukturkonfiguration förvaltas i sina respektive repon.
 
 ## Lokal installation
 
-På denna dator ligger källan i `~/Projects/homelab`. Den personliga
+På denna dator ligger källan i `~/Projects/plugins/plugins/homelab`. Den personliga
 marketplace-filen är `~/.agents/plugins/marketplace.json`, med namnet
 `personal`. Posten använder `./plugins/homelab`, relativt hemkatalogen
 (marketplace-roten), inte katalogen där JSON-filen ligger.
