@@ -1,7 +1,7 @@
 {
-  "name": "homelab",
+  "name": "plugins",
   "interface": {
-    "displayName": "Personal"
+    "displayName": "Plugins"
   },
   "plugins": [
     {
