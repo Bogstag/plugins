@@ -1,80 +1,108 @@
 # Homelab
 
-Personlig plugin för datorer och homelab. Tekniskt namn är `homelab`,
-visningsnamnet är **Homelab**, och pluginen ingår i marketplace `plugins`
-i repot `Bogstag/plugins`.
+Homelab (`homelab@plugins`) innehåller från version **0.2.0** en
+[chezmoi-skill](skills/chezmoi/SKILL.md) och den befintliga Aperture MCP-kopplingen.
 
-Version `0.1.1` innehåller ett portabelt manifest, en MCP-koppling till
-Aperture och dokumentation för kommande arbetsflöden. Inga aktiva skills,
-hooks, appmappningar eller hjälpskript ingår.
+Skillen analyserar, förbereder och granskar dotfiler och paketarbetsflöden.
+Den upptäcker körmiljön och läser målrepots aktuella regler, granskar
+skriptens sidoeffekter och skiljer verifiering från tillämpning. När verktyg
+eller autentisering saknas kan den fortfarande ge tydligt märkta förslag.
 
 ## Struktur
 
 ```text
-homelab/
-├── plugin.json       Identitet och extensions.com.openai
-├── mcp.json          Aperture MCP-server
-├── AGENTS.md         Regler för pluginutveckling
-├── README.md
-├── skills/README.md
-└── references/
-    ├── compatibility.md
-    └── roadmap.md
+plugin.json                     Portabelt manifest, extensions.com.openai
+mcp.json                        Befintlig Aperture-koppling
+skills/chezmoi/SKILL.md          Skillens ingång
+skills/chezmoi/references/       Referens som följer med installation
+references/                     Utvecklingskrav, roadmap och testredovisning
 ```
 
-`plugin.json` är ingången. OpenAI-inställningarna ligger i
-`extensions.com.openai`; ingen separat `.codex-plugin/plugin.json` behövs
-för denna struktur. `skills/` och `mcp.json` använder det portabla formatets
-fasta sökvägar.
+Skillen behöver inte pluginrepots `docs/` eller andra utvecklingsfiler utanför
+paketet. Målrepots AGENTS.md och beslut måste däremot vara tillgängliga vid
+användning. Inga nya hjälpskript, beroenden, hooks eller MCP-ändringar ingår.
 
-## Installation och uppdatering
+## Uppdatera installationen och prova
 
-Följ [repots installations-, uppdaterings- och kontrollsteg](../../README.md).
-Pluginens installationsnamn är `homelab@plugins`. Den verifierade
-installationen använder GitHub-marketplace, inte denna arbetsmapp direkt.
+Detta utvecklingssteg installerar, aktiverar eller publicerar inget.
+Codex listar fortfarande 0.1.1 från GitHub-källan; lokala 0.2.0 finns inte där
+genom detta uppdrag.
 
-## Aperture och körmiljö
+För att senare prova den lokala versionen, kör från pluginsamlingens reporot.
+Kontrollera först källan:
 
-`mcp.json` konfigurerar servern `aperture` med transporten `streamable-http`.
-Adressen är miljöspecifik och avsedd för det privata nätverket. Körmiljön
-måste kunna nå servern och ha de behörigheter som tjänsten kräver.
-Plugininstallation ger inte automatiskt nätverksåtkomst eller autentisering.
+```bash
+codex plugin marketplace list
+```
 
-Målmiljöerna är lokal Codex på Omarchy och Windows 11. Chezmoi, Git, `gh`,
-Bitwarden och SSH-agent måste finnas och fungera där respektive framtida
-arbetsflöde körs; de installeras inte av pluginen. Bash, PowerShell och WSL
-har olika förutsättningar.
+Om `plugins` fortfarande är den registrerade GitHub-källan, ersätt dess
+registrering med denna lokala checkout och installera paketet:
 
-Det portabla formatet möjliggör återanvändning, men garanterar inte stöd i
-alla värdar. ChatGPT eller andra molnmiljöer kan inte förutsättas nå datorns
-verktyg eller privata nätverk. Inga hemligheter, tokens eller privata
-SSH-nycklar ska lagras i paketet eller dess exempel.
+```bash
+codex plugin marketplace remove plugins
+codex plugin marketplace add .
+codex plugin add homelab@plugins
+codex plugin list --marketplace plugins --available --json
+```
 
-## Plan och utveckling
+Detta byter marketplace-källa för `plugins`. Om den redan pekar på rätt lokal
+checkout behövs bara `codex plugin add homelab@plugins` och kontrollen.
+Kontrollera att versionen är 0.2.0 och starta en **ny tråd/CLI-session**.
 
-Chezmoi är första planerade skill. Tailscale- och Aperture-arbetsflöden kan
-byggas ut senare; själva Aperture-kopplingen finns redan.
-Skapa `SKILL.md` först när en skill är färdig och testbar.
+För GitHub-flödet behöver ändringarna först granskas, committas och pushas
+med separat godkännande. När versionen finns i den källan, registrera
+`Bogstag/plugins` om nödvändigt och kör:
 
-[AGENTS.md](AGENTS.md) gäller pluginutveckling. Framtida skills får egna
-körinstruktioner och ska följa reglerna i målrepot. Dotfiles- och
-infrastrukturrepon äger sina egna installations- och driftsregler.
+```bash
+codex plugin marketplace upgrade plugins
+codex plugin add homelab@plugins
+```
 
-Äldre underlag finns i [planen](references/roadmap.md) och
-[kompatibilitetsanteckningarna](references/compatibility.md). De är ännu inte
-fullt uppdaterade för det portabla manifestet och den tillagda MCP-kopplingen;
-den aktuella strukturen och verifieringsstatusen beskrivs här.
+Prova i en ny session med målrepot öppet:
 
-## Verifieringsstatus
+> Använd $chezmoi från Homelab för att analysera detta repos regler och föreslå
+> en liten Starship-ändring. Ändra eller tillämpa inget. Redovisa skript och
+> vad du inte har verifierat.
 
-Kontrollerat 2026-09-09: manifest och MCP-fil är giltig JSON, marketplace-posten
-pekar rätt och Codex listar version `0.1.1` som installerad och aktiverad.
-Inga tomma appfiler, trasiga hook-referenser eller aktiva `SKILL.md` finns.
+Prova även automatisk aktivering:
 
-Den äldre lokala `plugin-creator`-validatorn underkänner avsaknaden av
-`.codex-plugin/plugin.json`; den stöder inte detta portabla manifestformat.
-Fullständig schemavalidering har inte genomförts.
+> Granska mitt chezmoi-repo och förklara vad som skulle kunna köras vid
+> tillämpning. Gör bara statisk analys och hämta inga hemligheter.
 
-Apertures anslutning och verktyg har inte funktionstestats via denna plugin.
-Windows, ChatGPT och andra värdar är inte testade. Installationsstatus ska
-därför inte tolkas som att alla framtida arbetsflöden fungerar.
+Kontrollera att just Homelabs skill laddas om andra chezmoi-skills finns
+installerade. Fler negativa scenarier och testprompter finns i
+[verifieringsrapporten](references/chezmoi-validation.md).
+
+## Verifiering och begränsningar
+
+Skill Creator-validering:
+
+```bash
+python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/homelab/skills/chezmoi
+```
+
+Kör från pluginsamlingens rot; validatorns plats beror på Codex-installationen.
+Den äldre pluginvalidatorn kräver legacy-manifest och används inte för att
+underkänna det befintliga portabla formatet. Versionsnumret har höjts från
+0.1.1 till 0.2.0 för den nya förmågan.
+
+Se [testredovisningen](references/chezmoi-validation.md) för strukturell
+validering, isolerade chezmoi-kontroller och simulerade beteendefall.
+Aktivering/discovery i värdappen, Windows, riktig Bitwarden-autentisering,
+tillämpning och Aperture-anslutning har inte testats i denna version.
+
+Aperture kräver nätverksåtkomst och tjänstens autentisering. Skillen använder
+inte MCP som ett generellt beroende. Varken lokala verktyg eller privat nätverk
+kan antas tillgängliga i ChatGPT eller andra värdar.
+
+## Fortsatt arbete
+
+[Roadmap](references/roadmap.md) beskriver nästa steg och
+[kravunderlaget](references/chezmoi-requirements.md) bevarar acceptansfallen.
+[AGENTS.md](AGENTS.md) gäller pluginutveckling, inte målrepots drift.
+
+Dokumenterade konflikter i målrepot ska följas upp där: Bitwarden-mall kontra
+README, `run_once`-beskrivning och ofullständig Windows-avgränsning.
+Äldre [kompatibilitetsanteckningar](references/compatibility.md) innehåller
+också inaktuella manifestuppgifter. Ingen av dessa används som skillens
+körreferens eller tyst rättas genom tillämpning.

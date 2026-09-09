@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "homelab",
-  "version": "0.1.1",
-  "description": "Personlig grund för återanvändbara arbetsflöden för datorer och homelab. Inga aktiva skills ännu.",
+  "version": "0.2.0",
+  "description": "Chezmoi-skill för analys, förberedelse och granskning av dotfiles samt Aperture MCP-koppling.",
   "license": "MIT",
   "keywords": [
     "homelab",
@@ -12,8 +12,8 @@
     "com.openai": {
       "interface": {
         "displayName": "Homelab",
-        "shortDescription": "Grund för personliga dator- och homelabflöden.",
-        "longDescription": "Lokal plugin under utveckling. Chezmoi är första planerade skill; Tailscale och Aperture är senare utökningar. Versionen innehåller enbart struktur och dokumentation.",
+        "shortDescription": "Granska och förbered dotfiles med chezmoi.",
+        "longDescription": "Innehåller en chezmoi-skill som läser målrepots regler, granskar skript och förbereder ändringar med tydliga verifierings- och godkännandegränser. Aperture MCP-koppling ingår separat.",
         "developerName": "Bogstag",
         "category": "Productivity",
         "capabilities": [],

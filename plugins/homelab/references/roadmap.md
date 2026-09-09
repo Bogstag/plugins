@@ -2,27 +2,27 @@
 
 Detta är planering, inte aktiverbara instruktioner.
 
-## Först: chezmoi
+## Levererat lokalt: chezmoi i 0.2.0
 
-Avgränsa en första skill till granskning och underhåll av dotfiler samt
-repots arbetsflöden kring paketinstallation. Utgå från det verkliga
-dotfiles-repots regler och låt skillen upptäcka källkatalog och plattform.
-Förhandsgranskning med status/diff ska föregå avsedda ändringar.
+[Skillen](../skills/chezmoi/SKILL.md) finns nu med en paketerad granskningsreferens.
+Den är inte installerad eller aktiverad i denna utvecklingssession.
+Återstår: aktiveringsprov i en ny session, verkliga Windows-flöden och senare
+användningsprov med separat godkännande av tillämpning. Se
+[verifieringsrapporten](chezmoi-validation.md) för testnivåer och testprompter.
 
-Målmiljöerna är Omarchy på laptop och Windows 11 på stationär dator.
-Git och `gh` används för versionshantering och GitHub. Bitwarden används för
-hemligheter och SSH; autentisering och SSH-agent måste kontrolleras separat
-i varje miljö utan att hemligheter skrivs ut.
-
-Skapa skillen först när omfattning, verktygskrav, fallback och realistiska
-testfall är definierade. Bash, PowerShell och WSL är separata körmiljöer;
-kommandon och sökvägar behöver provas där de ska användas.
+Syfte, arbetsgång och provfall finns i [chezmoi-kraven](chezmoi-requirements.md).
+Dotfiles-specifika beslut förvaltas i målrepot; se
+[regelägande och historik](../../../docs/decisions.md). De första anteckningarna
+här har ersatts av dessa underlag för att undvika dubblerade regler.
 
 ## Senare: Tailscale och Aperture
 
-Utöka vid konkret behov med nätverksdiagnostik via Tailscale och arbetsflöden
+En Aperture MCP-konfiguration finns redan. Utöka vid konkret behov med
+nätverksdiagnostik via Tailscale och arbetsflöden
 för AI-proxy via Aperture. Utred först var verktygen körs, nätverksåtkomst,
 autentisering och ägande av konfiguration. Lägg inte till anslutningar,
 proxyadresser, nycklar eller privilegier i förväg.
 
 Stöd i fler värdmiljöer följer [kompatibilitetsgränserna](compatibility.md).
+Äldre manifest-/reponamnsuppgifter och dotfiles-konflikterna är kvar som
+uppföljning i beslutsunderlagen; detta steg ändrar inte dotfiles-repot.

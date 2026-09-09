@@ -9,12 +9,13 @@ Agent Plugins-formatet. Marketplace heter `plugins` och visas som **Bogstag Plug
 .agents/plugins/marketplace.json   Pluginlista och installationspolicy
 plugins/homelab/plugin.json        Portabelt manifest och OpenAI-metadata
 plugins/homelab/mcp.json           Aperture MCP-konfiguration
-plugins/homelab/skills/            Plats för framtida skills
+plugins/homelab/skills/chezmoi/    Chezmoi-skill med paketerad referens
 plugins/homelab/references/        Referensmaterial och planering
 ```
 
 [Homelab](plugins/homelab/README.md) är den första pluginen: Aperture-koppling
-och grund för framtida chezmoi- och homelabflöden. Inga aktiva skills ingår ännu.
+och en chezmoi-skill för analys, förberedelse och granskning av dotfiles.
+Lokalt paket är 0.2.0; det har inte installerats i detta utvecklingssteg.
 
 Marketplace-postens `./plugins/homelab` räknas från reporoten, inte från
 `.agents/plugins/`. Fler plugins läggs under `plugins/<namn>/` med egna poster
@@ -72,7 +73,9 @@ matchar. Den lokala äldre `plugin-creator`-validatorn förväntar sig
 Kontrollerat 2026-09-09: JSON, marketplace-namn, policy, sökvägar och
 manifestmetadata stämmer. Codex CLI `0.153.4` visar `homelab@plugins` version
 `0.1.1` som installerad och aktiverad från GitHub-källan. Pluginens manifest
-och MCP-fil matchar dess lokala marketplace-kopia.
+och MCP-fil matchade då dess lokala marketplace-kopia. Efter skillutvecklingen
+är det lokala paketet 0.2.0, medan installerad version fortfarande är 0.1.1.
+Se [Homelabs verifiering och uppdateringssteg](plugins/homelab/README.md).
 
 Fullständig schemavalidering, Aperture-anslutning, verktygskörning och stöd i
 Windows, ChatGPT eller andra värdar är inte verifierade.
